@@ -1,17 +1,17 @@
 {
-  "name": "gender-fr",
-  "version": "1.0.4",
-  "description": "Get the gender (masculine, feminine) for each noun in french.",
+  "name": "gender-es",
+  "version": "1.0.0",
+  "description": "Get the gender (masculine, feminine) for each noun in spanish.",
   "main": "index.js",
   "scripts": {
     "test": "node test.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/swestrich/gender-fr.git"
+    "url": "https://github.com/swestrich/gender-es.git"
   },
   "keywords": [
-    "french",
+    "spanish",
     "gender",
     "article",
     "feminine",
@@ -22,13 +22,9 @@
   "author": "swestrich",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/swestrich/gender-fr/issues"
+    "url": "https://github.com/swestrich/gender-es/issues"
   },
   "devDependencies": {
     "unit.js": "2.x.x"
-  },
-  "dependencies": {
-    "diacritics": "^1.2.3",
-    "sqlite3": "^3.1.1"
   }
 }

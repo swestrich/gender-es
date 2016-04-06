@@ -1,9 +1,5 @@
 'use strict';
 
-var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database(__dirname + '/DictionaryModel.sqlite', sqlite3.OPEN_READONLY);
-var diacritics = require('diacritics');
-
 function contains(a, obj) {
   var i = a.length;
   while (i--) {
@@ -14,136 +10,124 @@ function contains(a, obj) {
   return false;
 }
 
-module.exports.gendersForNoun = function(str, clb) {
-  db.get("select gender_id from word where word = ?;", [str], function(err, row) {
-    var genders = []
-    if (row) {
-      if (row.gender_id === 1) {
-        genders.push('m');
-      }
-      else if (row.gender_id === 2) {
-        genders.push('f');
-      }
-      else if (row.gender_id === 3) {
-        genders.push('m');
-        genders.push('f');
-      }
-    } else {
-      //pretty good idea if the word ends in these
-      if (str.endsWith('euse')) genders.push('f');
-      else if (str.endsWith('ette')) genders.push('f');
-      else if (str.endsWith('et')) genders.push('m');
-      else if (str.endsWith('eur')) genders.push('m');
-      else if (str.endsWith('enne')) genders.push('f');
-      else if (str.endsWith('trice')) genders.push('f');
-    }
-    clb(err, genders);
-  });
-};
+module.exports.genderForNoun = function(str) {
 
-module.exports.isMasculine = function(str, clb) {
-  this.gendersForNoun(str, function(err, genders) {
-    if (err) {
-      clb(err);
+  //info can be found here http://www.spanishdict.com/topics/show/1
+
+  //If it ends in -o, -e, an accented vowel (á, é, í, ó, ú), -ma, or a consonant other than -d, -z, or ión, it's masculine.
+
+
+  var last_letter = str[str.length - 1], // Last letter of str
+    last_2_letters = str.slice(-2), // Last 3 letters of str
+    last_3_letters = str.slice(-3);
+
+  var isMasculine = false;
+
+  if (last_2_letters === 'ma') return 'm';
+
+  if (last_3_letters === 'ión' || last_3_letters === 'zón') {
+    var exeptions = ['corazón', 'sentención', 'notición', 'roción', 'ansión'];
+    if (exeptions.indexOf(str) > -1) {
+      return 'm';
     }
     else {
-      clb(err, contains(genders, 'm'));
+      return 'f';
     }
-  });
-};
-
-module.exports.isFeminine = function(str, clb) {
-  this.gendersForNoun(str, function(err, genders) {
-    if (err) {
-      clb(err);
-    }
-    else {
-      clb(err, contains(genders, 'f'));
-    }
-  });
-};
-
-module.exports.startsWithSilentConsonant = function(str, clb) {
-  db.get("select has_silent_consonant from word where word = ?;", [str], function(err, row) {
-    var has_silent_consonant = false;
-    if (row) {
-      has_silent_consonant = row.has_silent_consonant;
-    }
-    clb(err, has_silent_consonant);
-  });
-};
-
-module.exports.indefiniteArticle = function(str, clb) {
-  this.isFeminine(str, function(err, rBool) {
-    if (err) {
-      clb(err);
-    }
-    else {
-      clb(err, (rBool ? 'une' : 'un'));
-    }
-  });
-};
-
-module.exports.addIndefiniteArticle = function(str, clb) {
-  this.indefiniteArticle(str, function(err, rIndefiniteArticle) {
-    if (err) {
-      clb(err);
-    }
-    else {
-      clb(err, rIndefiniteArticle + ' ' + str);
-    }
-  });
-};
-
-module.exports.definiteArticle = function(str, clb) {
-  if (!str) clb(new Error('no string provided'));
-  var firstChar = diacritics.remove(str.slice(0, 1))[0];
-  var voyelles = ['a', 'e', 'i', 'o', 'u'];
-  var hy = ['h', 'y'];
-  if (str.length && contains(voyelles, firstChar)) {
-    clb(null, 'l\'');
   }
-  else if (str.length && contains(hy, firstChar)) {
-    var self = this;
-    this.startsWithSilentConsonant(str, function(err, rStartsWithSilentConsonant) {
-      if (err) {
-        return clb(err);
+
+  switch (last_letter) {
+    case 'o':
+    case 'e':
+    case 'á':
+    case 'é':
+    case 'í':
+    case 'ó':
+    case 'ú':
+      {
+        var exeptions = ['foto', 'llave', 'fe', 'mano', 'calle', 'moto', 'fiebre', 'libido', 'carne', 'radio', 'frase', 'polio', 'gente', 'virago', 'nieve', 'noche', 'nube', 'sangre', 'suerte', 'tarde', 'muerte', 'madre', 'base', 'clase', 'clave', 'corriente', 'fuente', 'llave', 'sede', 'serpiente', 'torre'];
+        if (exeptions.indexOf(str) > -1) {
+          return 'f';
+        }
+        else {
+          return 'm';
+        }
       }
-      if (rStartsWithSilentConsonant) {
-        clb(null, 'l\'');
+  }
+
+  switch (last_letter) { //a,d,z are feminin
+    case 'a':
+      {
+        var exeptions = ['panda', 'buda', 'día', 'planeta', 'mapa', 'estratega'];
+        if (exeptions.indexOf(str) > -1) {
+          return 'f';
+        }
+        else {
+          return 'm';
+        }
       }
-      else {
-        self.isFeminine(str, function(err, rBool) {
-          if (err) {
-            clb(err);
-          }
-          else {
-            clb(err, (rBool ? 'la' : 'le'));
-          }
-        });
+    case 'd':
+      {
+        var exeptions = ['huésped', 'ataúd', 'abad', 'alud', 'áspid', 'laúd', 'récord', 'milord', 'césped'];
+        if (exeptions.indexOf(str) > -1) {
+          return 'f';
+        }
+        else {
+          return 'm';
+        }
       }
-    });
+    case 'z':
+      {
+        var exeptions = ['aprendiz', 'cáliz', 'arroz', 'pez', 'lápiz', 'ajedrez', 'antifaz', 'maíz', 'albornoz', 'avestruz', 'altavoz', 'altramuz', 'arroz', 'barniz', 'cariz', 'disfraz', 'haz', 'matiz'];
+        if (exeptions.indexOf(str) > -1) {
+          return 'f';
+        }
+        else {
+          return 'm';
+        }
+      }
+
+  }
+
+  //the rest are masculine except
+
+  var exeptions = ['miel', 'sal', 'hiel', 'piel', 'coliflor', 'sor', 'labor', 'flor'];
+  if (exeptions.indexOf(str) > -1) {
+    return 'f';
   }
   else {
-    this.isFeminine(str, function(err, rBool) {
-      if (err) {
-        clb(err);
-      }
-      else {
-        clb(err, (rBool ? 'la' : 'le'));
-      }
-    });
+    return 'm';
+  }
+
+};
+
+module.exports.isMasculine = function(str) {
+  return this.genderForNoun(str) === 'm';
+};
+
+module.exports.isFeminine = function(str) {
+  return this.genderForNoun(str) === 'f';
+};
+
+module.exports.indefiniteArticle = function(str, amount) {
+  if (amount === undefined || amount === 1) {
+    return this.isFeminine(str) ? 'una' : 'un';
+  } else {
+    return this.isFeminine(str) ? 'unas' : 'unos';
   }
 };
 
-module.exports.addDefiniteArticle = function(str, clb) {
-  this.definiteArticle(str, function(err, rDefiniteArticle) {
-    if (err) {
-      clb(err);
-    }
-    else {
-      var lastChar = rDefiniteArticle.charAt(rDefiniteArticle.length - 1);
-      clb(err, rDefiniteArticle + ((lastChar === '\'') ? '' : ' ') + str);
-    }
-  });
+module.exports.addIndefiniteArticle = function(str,amount) {
+  return this.indefiniteArticle(str,amount) + ' ' + str;
+};
+
+module.exports.definiteArticle = function(str, amount) {
+  if (amount === undefined || amount === 1) {
+    return this.isFeminine(str) ? 'la' : 'el';
+  } else {
+    return this.isFeminine(str) ? 'las' : 'los';
+  }
+};
+
+module.exports.addDefiniteArticle = function(str,amount) {
+  return this.definiteArticle(str,amount) + ' ' + str;
 };

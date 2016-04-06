@@ -1,16 +1,16 @@
-# Gender-fr
+# Gender-es
 
-> Finds the gender of french nouns.
+> Finds the gender of spanish nouns.
 
 ## Installation
 ```
-$ npm install --save gender-fr
+$ npm install --save gender-es
 ```
 
 ## Usage
 
 ```js
-var gender = require('gender-fr');
+var gender = require('gender-es');
 
 gender.gendersForNoun('actrice', function(err, genders) {
   if (err) {
