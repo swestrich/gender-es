@@ -12,60 +12,33 @@ $ npm install --save gender-es
 ```js
 var gender = require('gender-es');
 
-gender.gendersForNoun('actrice', function(err, genders) {
-  if (err) {
-    throw err;
-  }
-  //genders=> ['f']
-});
+gender.genderForNoun('carne');
+// -> 'f'
 
-gender.isFeminine('maison', function(err, rBool) {
-  if (err) {
-    throw err;
-  }
-  //rBool=> true
-});
+gender.isFeminine('récord');
+// -> false
 
-gender.isMasculine('acteur', function(err, rBool) {
-  if (err) {
-    throw err;
-  }
-  //rBool=> true
-});
+gender.isMasculine('felicidad');
+// -> false
 
-gender.definiteArticle('héro', function(err, article) {
-  if (err) {
-    throw err;
-  }
-  //article=> le
-});
+gender.definiteArticle('calle');
+// -> 'la'
 
-gender.addDefiniteArticle('hystérie', function(err, string) {
-  if (err) {
-    throw err;
-  }
-  //string=> l'hystérie;
-});
+gender.addDefiniteArticle('miel');
+// -> 'la miel'
 
-gender.indefiniteArticle('fruit', function(err, article) {
-  if (err) {
-    throw err;
-  }
-  //article=> un;
-});
+gender.indefiniteArticle('moto');
+// -> una;
 
-gender.addIndefiniteArticle('lampe', function(err, string) {
-  if (err) {
-    throw err;
-  }
-  //string=> une lampe;
-});
+gender.addIndefiniteArticle('mapa',5); {
+// -> 'unos mapa';
+
 
 ```
 
 ## API
 
-### gendersForNoun(str,clb)
+### genderForNoun(str)
 
 #### str
 
@@ -73,7 +46,7 @@ Type: `string`
 
 Get the gender of the french noun.
 
-### isMasculine(str,clb)
+### isMasculine(str)
 
 #### str
 
@@ -81,7 +54,7 @@ Type: `string`
 
 Is the french noun masculine?
 
-### isFeminine(str,clb)
+### isFeminine(str)
 
 #### str
 
@@ -89,34 +62,34 @@ Type: `string`
 
 Is the french noun feminine?
 
-### indefiniteArticle(str,clb)
+### indefiniteArticle(str[,amount])
 
 #### str
 
 Type: `string`
 
-Gets the indefinite article for the word (un,une).
+Gets the indefinite article for the word (un,una,unos,unas).
 
-### definiteArticle(str,clb)
-
-#### str
-
-Type: `string`
-
-Gets the definite article for the word (l',le,la).
-
-### addIndefiniteArticle(str,clb)
+### definiteArticle(str[,amount])
 
 #### str
 
 Type: `string`
 
-Prefixes the indefinite article for the word (un,une) to the word.
+Gets the definite article for the word (el,la,los,las).
 
-### addDefiniteArticle(str,clb)
+### addIndefiniteArticle(str[,amount])
 
 #### str
 
 Type: `string`
 
-Prefixes the definite article for the word (l',le,la).
+Prefixes the indefinite article for the word (un,una,unos,unas) to the word.
+
+### addDefiniteArticle(str[,amount])
+
+#### str
+
+Type: `string`
+
+Prefixes the definite article for the word (el,la,los,las).

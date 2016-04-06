@@ -59,30 +59,30 @@ module.exports.genderForNoun = function(str) {
       {
         var exeptions = ['panda', 'buda', 'día', 'planeta', 'mapa', 'estratega'];
         if (exeptions.indexOf(str) > -1) {
-          return 'f';
+          return 'm';
         }
         else {
-          return 'm';
+          return 'f';
         }
       }
     case 'd':
       {
         var exeptions = ['huésped', 'ataúd', 'abad', 'alud', 'áspid', 'laúd', 'récord', 'milord', 'césped'];
         if (exeptions.indexOf(str) > -1) {
-          return 'f';
+          return 'm';
         }
         else {
-          return 'm';
+          return 'f';
         }
       }
     case 'z':
       {
         var exeptions = ['aprendiz', 'cáliz', 'arroz', 'pez', 'lápiz', 'ajedrez', 'antifaz', 'maíz', 'albornoz', 'avestruz', 'altavoz', 'altramuz', 'arroz', 'barniz', 'cariz', 'disfraz', 'haz', 'matiz'];
         if (exeptions.indexOf(str) > -1) {
-          return 'f';
+          return 'm';
         }
         else {
-          return 'm';
+          return 'f';
         }
       }
 
