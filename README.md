@@ -1,6 +1,6 @@
 # Gender-es
 
-> Finds the gender of spanish nouns.
+> Finds the gender of Spanish nouns.
 
 ## Installation
 ```
@@ -44,7 +44,7 @@ gender.addIndefiniteArticle('mapa',5); {
 
 Type: `string`
 
-Get the gender of the french noun.
+Get the gender of the Spanish noun.
 
 ### isMasculine(str)
 
@@ -52,7 +52,7 @@ Get the gender of the french noun.
 
 Type: `string`
 
-Is the french noun masculine?
+Is the Spanish noun masculine?
 
 ### isFeminine(str)
 
@@ -60,7 +60,7 @@ Is the french noun masculine?
 
 Type: `string`
 
-Is the french noun feminine?
+Is the Spanish noun feminine?
 
 ### indefiniteArticle(str[,amount])
 
