@@ -42,7 +42,8 @@ module.exports.genderForNoun = function (str) {
     case 'ó':
     case 'ú':
       {
-        const exeptions = ['foto', 'llave', 'fe', 'mano', 'calle', 'moto', 'fiebre', 'libido', 'carne', 'radio', 'frase', 'polio', 'gente', 'virago', 'nieve', 'noche', 'nube', 'sangre', 'suerte', 'tarde', 'muerte', 'madre', 'base', 'clase', 'clave', 'corriente', 'fuente', 'llave', 'sede', 'serpiente', 'torre'];
+        const exeptions = ['foto', 'llave', 'fe', 'mano', 'calle', 'moto', 'fiebre', 'libido', 'carne', 'radio', 'frase', 'polio', 'gente', 'virago', 'nieve', 'noche', 'nube', 'sangre', 'suerte', 'tarde', 'muerte', 'madre', 'base', 'clase', 'clave', 'corriente', 'fuente', 'llave', 'sede', 'serpiente', 'torre', 
+        'disco'];
         if (exeptions.indexOf(str) > -1) {
           return 'f';
         }
