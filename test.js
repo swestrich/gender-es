@@ -11,3 +11,5 @@ test.assert(gender.indefiniteArticle('moto') === 'una');
 test.assert(gender.definiteArticle('virago') === 'la');
 test.assert(gender.addDefiniteArticle('rosa') === 'la rosa');
 test.assert(gender.addIndefiniteArticle('mapa',5) === 'unos mapa');
+test.assert(gender.genderForNoun('disco') === 'f');
+test.assert(gender.genderForNoun('mujer') === 'f');

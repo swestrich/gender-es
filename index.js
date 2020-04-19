@@ -89,7 +89,7 @@ module.exports.genderForNoun = function (str) {
 
   //the rest are masculine except
 
-  const exeptions = ['miel', 'sal', 'hiel', 'piel', 'coliflor', 'sor', 'labor', 'flor'];
+  const exeptions = ['miel', 'sal', 'hiel', 'piel', 'coliflor', 'sor', 'labor', 'flor', 'mujer'];
   if (exeptions.indexOf(str) > -1) {
     return 'f';
   }
